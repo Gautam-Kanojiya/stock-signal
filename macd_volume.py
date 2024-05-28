@@ -2,7 +2,7 @@ import pandas as pd
 # from sqlalchemy import create_engine
 import ta
 import requests
-
+from volume import calc_volume
 # Database connection settings
 # db_config = {
 #     'username': 'your_username',
@@ -32,13 +32,11 @@ df = pd.read_csv(csv_file_path)
 df['macd'] = ta.trend.MACD(df['close']).macd()
 df['macd_signal'] = ta.trend.MACD(df['close']).macd_signal()
 
-# Calculate RSI
-df['rsi'] = ta.momentum.RSIIndicator(df['close']).rsi()
 
 # Generate buy/sell signals
 df['signal'] = None
-df.loc[(df['macd'] > df['macd_signal']) & (df['rsi'] < 30), 'signal'] = 'buy'
-df.loc[(df['macd'] < df['macd_signal']) & (df['rsi'] > 70), 'signal'] = 'sell'
+df.loc[(df['macd'] > df['macd_signal']) & calc_volume(), 'signal'] = 'buy'
+df.loc[(df['macd'] < df['macd_signal']) & calc_volume(), 'signal'] = 'sell'
 
 print(df.tail(10))
 
