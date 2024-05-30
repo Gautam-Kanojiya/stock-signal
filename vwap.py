@@ -11,10 +11,13 @@ df = pd.read_csv(csv_file_path)
 
 signal = None
 
-if (df['vwap'] > df[['close']]) :
-    signal = 'Buy'
-if (df['vwap'] < df[['close']]) :
-    signal = 'Sell'
+def calculate():
+    if (df['vwap'] > df[['close']]) :
+        signal = 'Buy'
+    if (df['vwap'] < df[['close']]) :
+        signal = 'Sell'
+        
+    return signal
     
     
     
