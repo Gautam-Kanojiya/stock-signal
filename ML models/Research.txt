@@ -1,0 +1,2 @@
+https://github.com/JordiCorbilla/stock-prediction-deep-neural-learning
+https://github.com/tejaslinge/Stock-Price-Prediction-using-LSTM-and-Technical-Indicators/blob/main/Price%20Prediction%20using%20LSTM%20and%20TA.ipynb
