@@ -23,15 +23,21 @@ const NewsComponent = () => {
     }
   }, [selectedCategory]);
 
+  const buttonClass = (category) => `
+    ${selectedCategory === category ? 'bg-black text-white' : 'bg-gray-200 text-black'}
+    rounded-full px-4 py-2 mr-2 mb-2 transition duration-300 ease-in-out
+    hover:bg-black hover:text-white
+  `;
+
   return (
-    <div>
-      <h2>Market News</h2>
-      <div>
+    <div className="border-gray-500 border-4 rounded-lg p-6 md:w-3/4 lg:w-1/2 mx-auto mt-8">
+      <h2 className="text-2xl mb-4">Market News</h2>
+      <div className="flex flex-wrap mb-4">
         {categories.map(category => (
           <button
             key={category}
             onClick={() => setSelectedCategory(category)}
-            style={{ margin: '5px', padding: '10px', background: selectedCategory === category ? 'lightgray' : 'white' }}
+            className={buttonClass(category)}
           >
             {category.charAt(0).toUpperCase() + category.slice(1)}
           </button>
@@ -40,12 +46,12 @@ const NewsComponent = () => {
       <div>
         {filteredNews.length > 0 ? (
           filteredNews.map(news => (
-            <div key={news.id} style={{ border: '1px solid black', margin: '10px', padding: '10px' }}>
-              <h3>{news.title}</h3>
+            <div key={news.id} className="bg-white border-b-2 border-gray-200 p-4 mb-4">
+              <h3 className="text-lg">{news.title}</h3>
             </div>
           ))
         ) : (
-          <p>No news available for this category.</p>
+          <p className="text-gray-600">No news available for this category.</p>
         )}
       </div>
     </div>
