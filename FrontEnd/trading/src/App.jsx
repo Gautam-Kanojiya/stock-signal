@@ -1,16 +1,31 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import StockTable from './components/todaysStocks.jsx';
+import Header from './components/Header';
+import Overview from './components/Overview';
+import About from './components/About';
+import SignIn from './components/SignIn';
+import SignUp from './components/SignUp';
+import PrivateRoute from './PrivateRoute';
+import { AuthProvider } from './AuthContext';
 
 function App() {
   return (
-    <div className="App">
-      <header className="bg-blue-600 p-4 text-white text-center">
-        <h1 className="text-3xl font-bold">Stock Market Overview</h1>
-      </header>
-      <StockTable />
-    </div>
+    <AuthProvider>
+      <Router>
+        <div className="min-h-screen flex flex-col">
+          <Header />
+          <main className="flex-grow p-4">
+            <Routes>
+              <PrivateRoute path="/overview" element={<Overview />} />
+              <PrivateRoute path="/about" element={<About />} />
+              <Route path="/signin" element={<SignIn />} />
+              <Route path="/signup" element={<SignUp />} />
+            </Routes>
+          </main>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
