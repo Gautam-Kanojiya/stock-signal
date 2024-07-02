@@ -1,0 +1,51 @@
+import React, { useState, useEffect } from 'react';
+import io from 'socket.io-client';
+
+const StockStrip = () => {
+  const [marketData, setMarketData] = useState({});
+
+  const updateMap = (companyId, closeVal, timeStamp) => {
+    setMarketData((prevCloseVals) => ({
+      ...prevCloseVals,
+      [companyId]: prevCloseVals[companyId]
+        ? [...prevCloseVals[companyId], { value: closeVal, time: timeStamp }]
+        : [{ value: closeVal, time: timeStamp }],
+    }));
+  };
+
+  useEffect(() => {
+    const socket = io('your_socket_server_url');
+
+    if (socket) {
+      socket.on('getOverview', (data) => {
+        updateMap(data.companyId, data.close, data.timestamp);
+        console.log(data);
+      });
+
+      return () => {
+        socket.off('getOverview');
+      };
+    }
+  }, [socket]);
+
+  const formatNumber = (num) => {
+    return num !== undefined && !isNaN(num) ? parseFloat(num).toFixed(2) : 'N/A';
+  };
+
+  return (
+    <div className="stock-strip-container">
+      <div className="stock-strip">
+        {Object.entries(marketData).map(([companyId, values]) => (
+          <div className="stock-strip_item" key={companyId}>
+            {companyId} <span>${formatNumber(values[values.length - 1].value)}</span>
+            <span className={values[values.length - 1].value > 0 ? 'positive' : 'negative'}>
+              {formatNumber(values[values.length - 1].value)}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default StockStrip;
